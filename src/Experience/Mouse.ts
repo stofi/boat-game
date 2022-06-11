@@ -32,13 +32,13 @@ class Mouse {
 
     addListeners() {
         window.addEventListener('mousemove', this.onMouseMove.bind(this))
-        window.addEventListener('mousedown', this.onMouseDown.bind(this))
-        window.addEventListener('mouseup', this.onMouseUp.bind(this))
+        // window.addEventListener('mousedown', this.onMouseDown.bind(this))
+        // window.addEventListener('mouseup', this.onMouseUp.bind(this))
     }
     removeListeners() {
         window.removeEventListener('mousemove', this.onMouseMove.bind(this))
-        window.removeEventListener('mousedown', this.onMouseDown.bind(this))
-        window.removeEventListener('mouseup', this.onMouseUp.bind(this))
+        // window.removeEventListener('mousedown', this.onMouseDown.bind(this))
+        // window.removeEventListener('mouseup', this.onMouseUp.bind(this))
     }
 
     onMouseMove(event: MouseEvent) {
