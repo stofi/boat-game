@@ -13,13 +13,15 @@ class Base extends EventEmitter {
     geometry?: THREE.BufferGeometry
     material?: THREE.Material
 
-    constructor() {
+    constructor(initialize = true) {
         super()
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
 
-        this.initialize()
+        if (initialize) {
+            this.initialize()
+        }
     }
     initialize() {
         throw new Error('Base.initialize must be implemented')

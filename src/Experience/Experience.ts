@@ -7,6 +7,7 @@ import Resources from './Utils/Resources'
 
 import Camera from './Camera'
 import Renderer from './Renderer'
+import Mouse from './Mouse'
 
 import World from './World/World'
 
@@ -24,6 +25,7 @@ class Experience {
     world!: World
     resources!: Resources
     gui!: gui.GUI
+    mouse!: Mouse
 
     constructor(canvas?: HTMLCanvasElement) {
         if (instance) return instance
@@ -41,6 +43,7 @@ class Experience {
         this.camera = new Camera({
             controls: 'orbit',
         })
+        this.mouse = new Mouse()
         this.world = new World()
         this.renderer = new Renderer()
         this.gui.close()

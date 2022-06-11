@@ -1,5 +1,7 @@
-import fragment from './basic.frag'
-import vertex from './basic.vert'
+import fragment from './shader.frag'
+import vertex from './shader.vert'
+
+import noiseSnippet from '../../lib/noise'
 
 const BasicShader = {
     uniforms: {
@@ -11,8 +13,8 @@ const BasicShader = {
             },
         },
     },
-    fragmentShader: fragment,
-    vertexShader: vertex,
+    fragmentShader: noiseSnippet(fragment),
+    vertexShader: noiseSnippet(vertex),
 }
 
 export default BasicShader

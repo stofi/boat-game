@@ -47,6 +47,7 @@ class Renderer {
             antialias: true,
             alpha: true,
         })
+        this.instance.shadowMap.enabled = true
 
         this.target = new THREE.WebGLRenderTarget(4, 3, {
             minFilter: THREE.LinearFilter,

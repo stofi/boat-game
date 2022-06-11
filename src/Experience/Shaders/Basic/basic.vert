@@ -1,0 +1,32 @@
+#ifdef LINT
+uniform mat4 modelMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform mat3 normalMatrix;
+uniform vec3 cameraPosition;
+attribute vec3 position;
+attribute vec3 normal;
+attribute vec2 uv;
+#endif
+
+#define M_PI 3.14159265358979323846
+
+varying vec4 vColor;
+varying vec2 vUv;
+varying vec3 vNormal;
+varying vec3 vPosition;
+
+uniform float uTime;
+uniform vec2 uOffset;
+
+void main(){
+	
+	vec3 p=position;
+	vPosition=p;
+	vec4 modelPosition=modelMatrix*vec4(p,1.);
+	vec4 viewPosition=viewMatrix*modelPosition;
+	vec4 projectionPosition=projectionMatrix*viewPosition;
+	
+	gl_Position=projectionPosition;
+}
