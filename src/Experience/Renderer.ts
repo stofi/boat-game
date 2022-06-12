@@ -8,6 +8,8 @@ import { SavePass } from 'three/examples/jsm/postprocessing/SavePass.js'
 import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
 import { BlendShader } from 'three/examples/jsm/shaders/BlendShader.js'
 
+import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js'
+
 import Experience from './Experience'
 import processingShader from './Shaders/Processing'
 
@@ -26,6 +28,7 @@ class Renderer {
     processingPass!: ShaderPass
     blendPass!: ShaderPass
     savePass!: SavePass
+    bokehPass!: BokehPass
     outputPass!: ShaderPass
     target!: THREE.WebGLRenderTarget
     gui!: gui.GUI
@@ -70,6 +73,17 @@ class Renderer {
                 this.experience.sizes.height
             )
         )
+        this.bokehPass = new BokehPass(
+            this.scene,
+            this.experience.camera.instance,
+            {
+                focus: 1.0,
+                aperture: 0.0001,
+                maxblur: 0.8,
+                width: this.experience.sizes.width,
+                height: this.experience.sizes.height,
+            }
+        )
 
         // blend pass
         this.blendPass = new ShaderPass(BlendShader, 'tDiffuse1')
@@ -84,6 +98,7 @@ class Renderer {
         this.effects.addPass(this.renderPass)
         this.effects.addPass(this.blendPass)
         this.effects.addPass(this.savePass)
+        this.effects.addPass(this.bokehPass)
         this.effects.addPass(this.outputPass)
         this.effects.addPass(this.processingPass)
 
@@ -96,12 +111,14 @@ class Renderer {
         this.blendPass.enabled = false
         this.savePass.enabled = false
         this.outputPass.enabled = false
+        this.bokehPass.enabled = false
     }
     turnOnEffects() {
         this.processingPass.enabled = true
         this.blendPass.enabled = true
         this.savePass.enabled = true
         this.outputPass.enabled = true
+        this.bokehPass.enabled = true
     }
     setGUI() {
         this.gui.add(this.renderPass, 'enabled').name('Render Pass')
@@ -110,6 +127,36 @@ class Renderer {
             .add(this.blendPass.uniforms.mixRatio, 'value', 0, 0.99)
             .name('Blend Ratio')
         this.gui.add(this.savePass, 'enabled').name('Save Pass')
+        this.gui.add(this.bokehPass, 'enabled').name('Bokeh Pass')
+
+        this.gui
+            .add(
+                (this.bokehPass.uniforms as any).focus,
+                'value',
+                0.0,
+                3000.0,
+                10
+            )
+            .name('Bokeh Focus')
+        this.gui
+            .add(
+                (this.bokehPass.uniforms as any).aperture,
+                'value',
+                0.00001,
+                0.01,
+                0.0001
+            )
+            .name('Bokeh Aperture')
+        this.gui
+            .add(
+                (this.bokehPass.uniforms as any).maxblur,
+                'value',
+                0.0,
+                1.0,
+                0.001
+            )
+            .name('Bokeh Max Blur')
+
         this.gui.add(this.outputPass, 'enabled').name('Output Pass')
         this.gui.add(this.processingPass, 'enabled').name('Post-processing')
     }

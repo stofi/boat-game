@@ -42,17 +42,20 @@ class Camera {
     private setInstance() {
         const ratio = this.sizes.width / this.sizes.height
         const d = this.sizes.height / 200
-        this.instance = new THREE.OrthographicCamera(
-            (-ratio * d) / 2,
-            (ratio * d) / 2,
-            d / 2,
-            -d / 2,
-            -100,
-            100
-        )
+        // this.instance = new THREE.OrthographicCamera(
+        //     (-ratio * d) / 2,
+        //     (ratio * d) / 2,
+        //     d / 2,
+        //     -d / 2,
+        //     -100,
+        //     100
+        // )
+        this.instance = new THREE.PerspectiveCamera(2, ratio, 0.1, 1000)
+
         this.instance.zoom = 0.2
         const y = 2
-        this.instance.position.set(14, 6 + y, -9)
+        // this.instance.position.set(14, 6 + y, -9)
+        this.instance.position.set(155, 75, -100)
 
         this.scene.add(this.instance)
         this.controls = new OrbitControls(this.instance, this.canvas)
@@ -61,6 +64,7 @@ class Camera {
         this.controls.enablePan = false
         this.controls.minZoom = 0.1
         this.controls.maxZoom = 1
+        this.controls.maxDistance = 200
         this.controls.minAzimuthAngle = Math.PI / 2
         this.controls.maxAzimuthAngle = Math.PI
         this.controls.maxPolarAngle = (4 * Math.PI) / 9

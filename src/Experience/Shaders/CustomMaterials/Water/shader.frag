@@ -44,6 +44,35 @@ float linearLight(float a,float b){
 	return linearDodge(a,b)+linearBurn(a,2.*b-1.);
 }
 
+float compressor(float x,int ratio){
+	float sX=x-.5;
+	return pow(
+		sin(
+			sX*M_PI/2.
+		),
+		float(
+			2*ratio+1
+		)
+	)*.5+.5;
+}
+
+float compressor2(float x,int ratio){
+	float sX=x-.5;
+	float absXoverX=abs(sX)/sX;
+	float oscillator=cos(
+		sX*M_PI/2.
+	);
+	return(
+		pow(
+			oscillator,
+			float(
+				2*ratio+1
+			)
+		)*absXoverX-absXoverX
+		/-1.
+	)*.5+.5;
+}
+
 void main(){
 	vec3 color=vec3(1.);
 	float h=0.;
@@ -82,9 +111,11 @@ void main(){
 	noise=blob*noise;
 	vec3 waves=mix(color,vec3(.4902,.8431,.949),noise);
 	color=mix(color,waves,.06);
-	csm_DiffuseColor=vec4(color,.8);
+	float unitCircle=1.-smoothstep(.4,.5,length(vUv-.5-uOffset));
+	csm_DiffuseColor=vec4(color,.8*unitCircle);
 	
 	// csm_DiffuseColor=vec4(vec3(vX+2.),1.);
-	// csm_FragColor=vec4(vec3(vX+2.),1.);
+	// csm_FragColor=vec4(vec3(vX+2.),unitCircle);
+	// csm_FragColor=vec4(unitCircle,0.,0.,unitCircle);
 	
 }

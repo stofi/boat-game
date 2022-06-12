@@ -12,7 +12,7 @@ class Environment {
         this.addHemiSphereLight('#002f6c', '#71BCE1', 0.5)
         this.addSkyDome('#002f6c', '#71BCE1')
         this.addDirectionalLight('#ffffff', 0.75)
-        // this.addFog('#002f6c', 15, 40)
+        // this.addFog('#0f427c', 60, 80)
     }
 
     setBackground(color: string) {
