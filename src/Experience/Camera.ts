@@ -47,18 +47,25 @@ class Camera {
             (ratio * d) / 2,
             d / 2,
             -d / 2,
-            -10,
+            -100,
             100
         )
         this.instance.zoom = 0.2
         const y = 2
-        this.instance.position.set(10, 10 + y, 10)
-        this.instance.lookAt(
-            this.scene.position.clone().add(new THREE.Vector3(0, y, 0))
-        )
+        this.instance.position.set(14, 6 + y, -9)
 
         this.scene.add(this.instance)
         this.controls = new OrbitControls(this.instance, this.canvas)
+        this.controls.enableDamping = true
+        this.controls.dampingFactor = 0.25
+        this.controls.enablePan = false
+        this.controls.minZoom = 0.1
+        this.controls.maxZoom = 1
+        this.controls.minAzimuthAngle = Math.PI / 2
+        this.controls.maxAzimuthAngle = Math.PI
+        this.controls.maxPolarAngle = (4 * Math.PI) / 9
+        this.controls.target.set(0, y + 2, 0)
+        // this.controls.minPolarAngle = -Math.PI / 2
     }
 
     resize() {

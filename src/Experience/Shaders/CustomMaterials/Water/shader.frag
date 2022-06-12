@@ -16,6 +16,7 @@ uniform float uA;
 uniform float uB;
 varying vec4 vColor;
 varying vec2 vUv;
+varying float vX;
 
 varying float vH;
 uniform float uTime;
@@ -54,7 +55,7 @@ void main(){
 	color=mix(uColor1,uColor2,h);
 	
 	vec2 nUv=vUv;
-	nUv*=2.;
+	nUv*=4.;
 	vec3 waveColor=vec3(1.);
 	float wave=0.;
 	vec3 waveUv=vec3(nUv,uTime*.02)*30.;
@@ -75,14 +76,15 @@ void main(){
 	blob=smoothstep(.98,1.,blob);
 	
 	float noise=0.;
-	vec3 noiseUv=vec3(nUv,uTime*.08)*1.4;
+	vec3 noiseUv=vec3(nUv,uTime*.08)*3.;
 	noise=snoise(noiseUv)*.25+.75;
 	noise=pow(noise,1.2);
 	noise=blob*noise;
 	vec3 waves=mix(color,vec3(.4902,.8431,.949),noise);
-	color=mix(color,waves,.2);
-	csm_DiffuseColor=vec4(color,1.);
+	color=mix(color,waves,.06);
+	csm_DiffuseColor=vec4(color,.8);
 	
-	/* gl_FragColor = vec4(vPosition.yyy*uHeight,1.); */
+	// csm_DiffuseColor=vec4(vec3(vX+2.),1.);
+	// csm_FragColor=vec4(vec3(vX+2.),1.);
 	
 }

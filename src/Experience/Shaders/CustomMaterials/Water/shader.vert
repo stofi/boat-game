@@ -14,6 +14,7 @@ attribute vec2 uv;
 
 varying vec4 vColor;
 varying vec2 vUv;
+varying float vX;
 // varying vec3 vNormal;
 varying vec3 vPosition;
 varying float vH;
@@ -47,8 +48,9 @@ void main(){
 	vec4 projectionPosition=projectionMatrix*viewPosition;
 	
 	vPosition=modelPosition.xyz;
+	vX=noiseSignal;
 	
 	// gl_Position=projectionPosition;
 	csm_Position=p;
-	csm_Normal=n;
+	csm_Normal=mix(n,normal,.5);
 }

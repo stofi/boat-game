@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as gui from 'lil-gui'
 import Base from './Base'
 
@@ -7,7 +8,7 @@ import waterShader from '../../Shaders/CustomMaterials/Water'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 class Plane extends Base {
-    scale = 30
+    scale = 160
     gui!: gui.GUI
     constructor() {
         super(false)
@@ -15,11 +16,23 @@ class Plane extends Base {
     }
 
     initialize() {
+        const gltf = this.experience.resources.items['plane'] as GLTF
+
+        const meshes = gltf.scene.children.reduce((acc, child) => {
+            if (!child) return acc
+            if (child.type !== 'Mesh') return acc
+            acc.push(child as THREE.Mesh)
+            return acc
+        }, [] as THREE.Mesh[])
+
+        const planemesh = meshes[0]
+
+        // this.geometry = planemesh.geometry
         this.geometry = new THREE.PlaneBufferGeometry(
             this.scale,
             this.scale,
-            512,
-            512
+            1024,
+            1024
         )
         // this.material = new THREE.ShaderMaterial({
         //     ...waterShader,
@@ -31,6 +44,7 @@ class Plane extends Base {
             roughness: 0,
             metalness: 0,
             side: THREE.DoubleSide,
+            transparent: true,
         })
         this.material = new CustomShaderMaterial({
             baseMaterial,
@@ -41,6 +55,7 @@ class Plane extends Base {
         this.mesh.receiveShadow = true
         this.mesh.castShadow = true
         this.mesh.rotation.x = Math.PI / 2
+
         // this.mesh.visible = false
         this.scene.add(this.mesh)
 
@@ -86,11 +101,11 @@ class Plane extends Base {
             this.material.uniforms.uTime.value =
                 this.experience.time.elapsed / 1000
 
-            // const mouse = this.experience.mouse.worldPosition
+            const mouse = this.experience.mouse.worldPosition
 
-            // // rotate mouse by 45 degrees on y axis
-            // const mouseRotated = new THREE.Vector3(mouse.x, mouse.y, mouse.z)
-            // // mouseRotated.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 4)
+            // rotate mouse by 45 degrees on y axis
+            const mouseRotated = new THREE.Vector3(mouse.x, mouse.y, mouse.z)
+            // mouseRotated.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 4)
 
             // this.material.uniforms.uOffset.value = new THREE.Vector2(
             //     -mouseRotated.x,

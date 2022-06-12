@@ -63,6 +63,7 @@ class Renderer {
         this.processingPass.enabled = true
 
         // save pass
+
         this.savePass = new SavePass(
             new THREE.WebGLRenderTarget(
                 this.experience.sizes.width,
@@ -103,7 +104,7 @@ class Renderer {
         this.outputPass.enabled = true
     }
     setGUI() {
-        this.gui.add(this.renderPass, 'enabled').name('Rewnder Pass')
+        this.gui.add(this.renderPass, 'enabled').name('Render Pass')
         this.gui.add(this.blendPass, 'enabled').name('Blend Pass')
         this.gui
             .add(this.blendPass.uniforms.mixRatio, 'value', 0, 0.99)
@@ -114,10 +115,28 @@ class Renderer {
     }
 
     resize() {
-        this.instance.setPixelRatio(this.sizes.pixelRatio)
-        this.instance.setSize(this.sizes.width, this.sizes.height)
+        const aspect = this.sizes.width / this.sizes.height
+        // max 1080p
+        const maxWidth = 720
+        // const maxWidth = 1920
+        const size = new THREE.Vector2(
+            this.experience.sizes.width,
+            this.experience.sizes.height
+        )
+        if (size.x > maxWidth) {
+            size.x = maxWidth
+            size.y = size.x / aspect
+        }
+        const pixelRatio = size.x / this.experience.sizes.width
+
+        this.instance.setPixelRatio(pixelRatio)
         this.effects.setPixelRatio(this.sizes.pixelRatio)
+        this.instance.setSize(this.sizes.width, this.sizes.height)
         this.effects.setSize(this.sizes.width, this.sizes.height)
+        // this.instance.setPixelRatio(this.sizes.pixelRatio)
+        // this.instance.setSize(this.sizes.width, this.sizes.height)
+        // this.effects.setPixelRatio(this.sizes.pixelRatio)
+        // this.effects.setSize(this.sizes.width, this.sizes.height)
     }
 
     update() {

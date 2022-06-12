@@ -107,27 +107,28 @@ float fbm(vec3 x,float height,float amplitude,float frequency){
 
 float terrain(vec2 p,float second){
   float h=0.;
-  vec2 q=p*vec2(3.);
-  float time=uTime*2.;
+  vec2 q=p*vec2(20.);
+  float time=0.;
+  time=uTime*2.;
   
   // First layer
   {
     
-    vec2 uv=q;
+    vec2 uv=q*.2;
     float h1=0.;
     // sin(uTime/2.)+1.)/4.,4.)
     vec3 offset=vec3(0.,0.,0.);
-    
-    offset.x=sin(time/5.)/2.+123.;
-    offset.y=time/40.;
-    offset.z=(time/10.)/4.;
+    float timex=time*.1;
+    offset.x=20.*(timex)/10.+100.;
+    offset.y=timex;
+    offset.z=20.*(timex)/10.;
     offset.xz/=4.;
     
     vec3 samplePos=vec3(uv.x,0.,uv.y);
     float t1=fbm(samplePos+offset,0.,.5,.3);
     t1=smoothstep(-1.,1.,t1)*.5+.5;
     t1=pow(t1,2.)*2.-1.;
-    t1*=1.;
+    t1*=.8;
     h1+=t1-2.;
     h+=h1;
   }
@@ -145,7 +146,7 @@ float terrain(vec2 p,float second){
     vec3 samplePos=vec3(uv.x,0.,uv.y);
     float t1=fbm(samplePos+offset,0.,.5,12.);
     t1=smoothstep(-1.,1.,t1);
-    t1*=.05;
+    t1*=.02;
     h1+=t1;
     h+=h1*second;
   }
